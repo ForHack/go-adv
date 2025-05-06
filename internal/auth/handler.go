@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"encoding/json"
 	"fmt"
 	"go/adv-demo/configs"
 	"go/adv-demo/pkg/res"
@@ -24,7 +25,14 @@ func NewAuthHandler(router *http.ServeMux, deps AuthHandlerDeps) {
 }
 
 func (handler *AuthHandler) Login() http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
+	return func(w http.ResponseWriter, req *http.Request) {
+		var payload LoginRequest
+		err := json.NewDecoder(req.Body).Decode(&payload)
+		if err != nil {
+			res.Json(w, err.Error(), http.StatusBadRequest)
+		}
+
+		fmt.Println(payload)
 		data := LoginResponse{
 			Token: "1234567890",
 		}
