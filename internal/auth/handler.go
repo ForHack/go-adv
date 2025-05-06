@@ -6,6 +6,7 @@ import (
 	"go/adv-demo/configs"
 	"go/adv-demo/pkg/res"
 	"net/http"
+	"net/mail"
 )
 
 type AuthHandler struct {
@@ -35,6 +36,12 @@ func (handler *AuthHandler) Login() http.HandlerFunc {
 
 		if payload.Email == "" {
 			res.Json(w, "Email required", http.StatusBadRequest)
+			return
+		}
+
+		_, err = mail.ParseAddress(payload.Email)
+		if err != nil {
+			res.Json(w, "Wrong Email", http.StatusBadRequest)
 			return
 		}
 
