@@ -27,8 +27,12 @@ func main() {
 	})
 
 	server := http.Server{
-		Addr:    ":8081",
-		Handler: middleware.Logging(router),
+		Addr: ":8081",
+		Handler: middleware.CORS(
+			middleware.Logging(
+				router,
+			),
+		),
 	}
 
 	fmt.Println("Starting server on :8081")
