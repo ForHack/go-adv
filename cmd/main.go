@@ -26,13 +26,15 @@ func main() {
 		LinkRepository: linkRepository,
 	})
 
+	// Middlewares
+	stack := middleware.Chain(
+		middleware.CORS,
+		middleware.Logging,
+	)
+
 	server := http.Server{
-		Addr: ":8081",
-		Handler: middleware.CORS(
-			middleware.Logging(
-				router,
-			),
-		),
+		Addr:    ":8081",
+		Handler: stack(router),
 	}
 
 	fmt.Println("Starting server on :8081")
