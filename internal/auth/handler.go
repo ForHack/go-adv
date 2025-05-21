@@ -34,7 +34,8 @@ func (handler *AuthHandler) Login() http.HandlerFunc {
 			return
 		}
 
-		fmt.Println(body)
+		email, err := handler.AuthService.Login(body.Email, body.Password)
+		fmt.Println(email, err)
 		data := LoginResponse{
 			Token: "1234567890",
 		}
